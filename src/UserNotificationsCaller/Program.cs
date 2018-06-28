@@ -13,7 +13,10 @@ namespace UserNotificationsCaller
         {
             Notifications com = new Notifications();
             com.SetTitle("c#7");
-            com.Show("time now: " + DateTime.Now.ToString("s"));
+            do
+            {
+                com.Show("time now: " + DateTime.Now.ToString("s"));
+            } while (Console.ReadLine() != "exit");
         }
     }
 }
