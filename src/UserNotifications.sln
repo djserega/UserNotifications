@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotifications", "UserNotifications\UserNotifications.csproj", "{16656B20-A04A-4B1B-9B16-221D97ABFA1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserNotificationsCaller", "UserNotificationsCaller\UserNotificationsCaller.csproj", "{52F8A9ED-B451-40D3-9F84-CFFE30B54D2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{16656B20-A04A-4B1B-9B16-221D97ABFA1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16656B20-A04A-4B1B-9B16-221D97ABFA1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16656B20-A04A-4B1B-9B16-221D97ABFA1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F8A9ED-B451-40D3-9F84-CFFE30B54D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F8A9ED-B451-40D3-9F84-CFFE30B54D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F8A9ED-B451-40D3-9F84-CFFE30B54D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F8A9ED-B451-40D3-9F84-CFFE30B54D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
