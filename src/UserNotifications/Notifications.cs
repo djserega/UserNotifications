@@ -14,14 +14,26 @@ namespace UserNotifications
     {
         private Notify _notify;
 
-        public Notifications(string dbName)
+        public Notifications()
         {
-            _notify = new Notify(dbName);
+            
         }
 
-        public void Show(string message)
+        public void SetTitle(string title)
         {
+            _notify = new Notify(title);
+        }
+
+        public string Show(string message)
+        {
+            if (_notify == null)
+            {
+                return "Не установлен заголовок.";
+            };
+
             _notify.Show(message);
+
+            return string.Empty;
         }
     }
 }

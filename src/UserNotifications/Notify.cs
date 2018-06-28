@@ -9,12 +9,12 @@ using System.Windows.Forms;
 
 namespace UserNotifications
 {
-    internal class Notify : IDisposable
+    public class Notify : IDisposable
     {
-        private string _title;
+        private readonly string _title;
         private NotifyIcon _notifyIcon;
-        
-        internal Notify(string title)
+
+        public Notify(string title)
         {
             _title = title;
 
@@ -30,7 +30,7 @@ namespace UserNotifications
             _notifyIcon?.Dispose();
         }
 
-        internal void Show(string message)
+        public void Show(string message)
         {
             _notifyIcon.ShowBalloonTip(0, _title, message, ToolTipIcon.Info);
         }
