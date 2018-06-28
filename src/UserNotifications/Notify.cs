@@ -21,7 +21,8 @@ namespace UserNotifications
             _notifyIcon = new NotifyIcon()
             {
                 BalloonTipIcon = ToolTipIcon.Info,
-                Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
+                Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+                Visible = true
             };
         }
 
