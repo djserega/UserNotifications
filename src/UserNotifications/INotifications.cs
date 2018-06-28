@@ -6,6 +6,7 @@ namespace UserNotifications
     public interface INotifications
     {
         void SetTitle(string title);
-        string Show(string message);
+        void Show(string message);
+        void Hide();
     }
 }

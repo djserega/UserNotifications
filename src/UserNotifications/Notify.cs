@@ -9,15 +9,13 @@ using System.Windows.Forms;
 
 namespace UserNotifications
 {
-    public class Notify : IDisposable
+    internal class Notify
     {
-        private readonly string _title;
+        private string _title;
         private NotifyIcon _notifyIcon;
 
-        public Notify(string title)
+        internal Notify()
         {
-            _title = title;
-
             _notifyIcon = new NotifyIcon()
             {
                 BalloonTipIcon = ToolTipIcon.Info,
@@ -26,14 +24,10 @@ namespace UserNotifications
             };
         }
 
-        public void Dispose()
-        {
-            _notifyIcon?.Dispose();
-        }
+        internal void SetTitle(string title) => _title = title;
 
-        public void Show(string message)
-        {
-            _notifyIcon.ShowBalloonTip(0, _title, message, ToolTipIcon.Info);
-        }
+        internal void Show(string message) => _notifyIcon.ShowBalloonTip(0, _title, message, ToolTipIcon.Info);
+
+        internal void Hide() => _notifyIcon.Visible = false;
     }
 }

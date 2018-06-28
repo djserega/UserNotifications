@@ -16,24 +16,13 @@ namespace UserNotifications
 
         public Notifications()
         {
-            
+            _notify = new Notify();
         }
 
-        public void SetTitle(string title)
-        {
-            _notify = new Notify(title);
-        }
+        public void SetTitle(string title) => _notify.SetTitle(title);
 
-        public string Show(string message)
-        {
-            if (_notify == null)
-            {
-                return "Не установлен заголовок.";
-            };
+        public void Show(string message) => _notify.Show(message);
 
-            _notify.Show(message);
-
-            return string.Empty;
-        }
+        public void Hide() => _notify.Hide();
     }
 }
