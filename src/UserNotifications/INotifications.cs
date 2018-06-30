@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace UserNotifications
+namespace AddIn
 {
-    [Guid("B9A8CAE5-FD4E-4A2A-895B-6FE44ED95B27")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface INotifications
     {
         void SetTitle(string title);
