@@ -23,7 +23,7 @@ namespace AddIn
             {
                 BalloonTipIcon = ToolTipIcon.Info,
                 Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
-                Visible = true
+                //Visible = true
             };
             _notifyIcon.BalloonTipClicked += _notifyIcon_BalloonTipClicked;
             _notifyIcon.BalloonTipClosed += _notifyIcon_BalloonTipClosed;
@@ -44,8 +44,10 @@ namespace AddIn
 
         internal void SetTitle(string title) => _title = title;
 
-        internal void Show(string message)
+        internal void ShowMessage(string message)
         {
+            Show();
+
             _notifyIcon.BalloonTipTitle = _title;
             _notifyIcon.BalloonTipText = message;
             _notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
@@ -55,6 +57,8 @@ namespace AddIn
             _notifyIcon.ShowBalloonTip(0);
         }
 
+
+        internal void Show() => _notifyIcon.Visible = true;
         internal void Hide() => _notifyIcon.Visible = false;
     }
 }

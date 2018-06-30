@@ -33,14 +33,14 @@ namespace AddIn
 
         public void SetTitle(string title) => _notify.SetTitle(title);
 
-        public void Show(string message)
+        public void ShowMessage(string message)
         {
-            _notify.Show(message);
+            _notify.ShowMessage(message);
         }
 
-        public void Show(string message, string url)
+        public void ShowMessage(string message, string url)
         {
-            _notify.Show(message);
+            _notify.ShowMessage(message);
         }
 
         public void Hide() => _notify.Hide();

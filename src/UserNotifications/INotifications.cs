@@ -6,7 +6,7 @@ namespace AddIn
     public interface INotifications
     {
         void SetTitle(string title);
-        void Show(string message);
+        void ShowMessage(string message);
         void Hide();
     }
 }
