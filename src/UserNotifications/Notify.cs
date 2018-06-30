@@ -21,12 +21,6 @@ namespace AddIn
                 Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
             };
             _notifyIcon.BalloonTipClicked += _notifyIcon_BalloonTipClicked;
-            _notifyIcon.BalloonTipClosed += _notifyIcon_BalloonTipClosed;
-            
-        }
-
-        private void _notifyIcon_BalloonTipClosed(object sender, EventArgs e)
-        {
         }
 
         private void _notifyIcon_BalloonTipClicked(object sender, EventArgs e)
@@ -47,7 +41,6 @@ namespace AddIn
 
             _notifyIcon.ShowBalloonTip(0);
         }
-
 
         internal void Show() => _notifyIcon.Visible = true;
         internal void Hide() => _notifyIcon.Visible = false;
