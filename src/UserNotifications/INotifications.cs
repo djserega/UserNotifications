@@ -7,6 +7,7 @@ namespace AddIn
     {
         void SetTitle(string title);
         void ShowMessage(string message);
+        void ShowMessageURL(string message, string url);
         void Hide();
     }
 }

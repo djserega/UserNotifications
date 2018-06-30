@@ -57,6 +57,7 @@
     <Compile Include="INotifications.cs" />
     <Compile Include="Notifications.cs" />
     <Compile Include="Notify.cs" />
+    <Compile Include="ObjectUserNotifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
