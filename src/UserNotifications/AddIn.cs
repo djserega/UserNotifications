@@ -21,21 +21,21 @@ public interface IInitDone
 public interface ILanguageExtender
 {
     void RegisterExtensionAs([MarshalAs(UnmanagedType.BStr)] ref String extensionName);
-    void GetNProps(ref Int32 props);
-    void FindProp([MarshalAs(UnmanagedType.BStr)] String propName, ref Int32 propNum);
-    void GetPropName(Int32 propNum, Int32 propAlias, [MarshalAs(UnmanagedType.BStr)] ref String propName);
-    void GetPropVal(Int32 propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal);
-    void SetPropVal(Int32 propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal);
-    void IsPropReadable(Int32 propNum, ref bool propRead);
-    void IsPropWritable(Int32 propNum, ref Boolean propWrite);
-    void GetNMethods(ref Int32 pMethods);
-    void FindMethod([MarshalAs(UnmanagedType.BStr)] String methodName, ref Int32 methodNum);
-    void GetMethodName(Int32 methodNum, Int32 methodAlias, [MarshalAs(UnmanagedType.BStr)] ref String methodName);
-    void GetNParams(Int32 methodNum, ref Int32 pParams);
-    void GetParamDefValue(Int32 methodNum, Int32 paramNum, [MarshalAs(UnmanagedType.Struct)] ref object paramDefValue);
-    void HasRetVal(Int32 methodNum, ref Boolean retValue);
-    void CallAsProc(Int32 methodNum, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams);
-    void CallAsFunc(Int32 methodNum, [MarshalAs(UnmanagedType.Struct)] ref object retValue, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams);
+    void GetNProps(ref int props);
+    void FindProp([MarshalAs(UnmanagedType.BStr)] String propName, ref int propNum);
+    void GetPropName(int propNum, int propAlias, [MarshalAs(UnmanagedType.BStr)] ref String propName);
+    void GetPropVal(int propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal);
+    void SetPropVal(int propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal);
+    void IsPropReadable(int propNum, ref bool propRead);
+    void IsPropWritable(int propNum, ref Boolean propWrite);
+    void GetNMethods(ref int pMethods);
+    void FindMethod([MarshalAs(UnmanagedType.BStr)] String methodName, ref int methodNum);
+    void GetMethodName(int methodNum, int methodAlias, [MarshalAs(UnmanagedType.BStr)] ref String methodName);
+    void GetNParams(int methodNum, ref int pParams);
+    void GetParamDefValue(int methodNum, int paramNum, [MarshalAs(UnmanagedType.Struct)] ref object paramDefValue);
+    void HasRetVal(int methodNum, ref Boolean retValue);
+    void CallAsProc(int methodNum, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams);
+    void CallAsFunc(int methodNum, [MarshalAs(UnmanagedType.Struct)] ref object retValue, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams);
 }
 
 /// <summary>Интерфейс реализован 1С для получения событий от компоненты</summary>
@@ -44,7 +44,7 @@ public interface ILanguageExtender
 [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 public interface IAsyncEvent
 {
-    void SetEventBufferDepth(Int32 depth);
+    void SetEventBufferDepth(int depth);
     void GetEventBufferDepth(ref long depth);
     void ExternalEvent([MarshalAs(UnmanagedType.BStr)] String source, [MarshalAs(UnmanagedType.BStr)] String message, [MarshalAs(UnmanagedType.BStr)] String data);
     void CleanBuffer();
@@ -56,7 +56,7 @@ public interface IAsyncEvent
 [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 public interface IStatusLine
 {
-    void SetStarusLine([MarshalAs(UnmanagedType.BStr)] String bstrStatusLine);
+    void SetStatusLine([MarshalAs(UnmanagedType.BStr)] String bstrStatusLine);
     void ResetStatusLine();
 }
 
@@ -132,10 +132,7 @@ namespace AddIn
         /// Объект должен возвратить S_OK. Этот метод вызывается независимо от результата
         /// инициализации объекта (метод Init).
         /// </summary>
-        public void Done()
-        {
-
-        }
+        public void Done() { }
 
         /// <summary>
         /// 1С:Предприятие V8 вызывает этот метод для получения информации о компоненте.
@@ -148,9 +145,7 @@ namespace AddIn
         /// </summary>
         /// <param name="info">Component information</param>
         public void GetInfo([MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] info)
-        {
-            info[0] = 2000;
-        }
+            => info[0] = 2000;
 
         /// <summary>Регистрация свойств и методов компоненты в 1C</summary>
         /// <param name="extensionName"></param>
@@ -255,110 +250,86 @@ namespace AddIn
 
         /// <summary>Возвращает количество свойств</summary>
         /// <param name="props"></param>
-        public void GetNProps(ref Int32 props)
-        {
-            props = (Int32)propertyNameToNumber.Count;
-        }
+        public void GetNProps(ref int props)
+            => props = propertyNameToNumber.Count;
 
         /// <summary>Возвращает целочисленный идентификатор свойства, соответствующий переданному имени</summary>
         /// <param name="propName"></param>
         /// <param name="propNum"></param>
-        public void FindProp([MarshalAs(UnmanagedType.BStr)] String propName, ref Int32 propNum)
-        {
-            propNum = (Int32)propertyNameToNumber[propName];
-        }
+        public void FindProp([MarshalAs(UnmanagedType.BStr)] String propName, ref int propNum)
+            => propNum = (int)propertyNameToNumber[propName];
 
         /// <summary>Возвращает имя свойства, соответствующее переданному целочисленному идентификатору</summary>
         /// <param name="propNum"></param>
         /// <param name="propAlias"></param>
         /// <param name="propName"></param>
-        public void GetPropName(Int32 propNum, Int32 propAlias, [MarshalAs(UnmanagedType.BStr)] ref String propName)
-        {
-            propName = (String)propertyNumberToName[propNum];
-        }
+        public void GetPropName(int propNum, int propAlias, [MarshalAs(UnmanagedType.BStr)] ref String propName)
+            => propName = (String)propertyNumberToName[propNum];
 
         /// <summary>Возвращает значение свойства</summary>
         /// <param name="propNum"></param>
         /// <param name="propVal"></param>
-        public void GetPropVal(Int32 propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal)
-        {
-            propVal = allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].GetValue(this, null);
-        }
+        public void GetPropVal(int propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal)
+            => propVal = allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].GetValue(this, null);
 
         /// <summary>Устанавливает значение свойства</summary>
         /// <param name="propNum"></param>
         /// <param name="propVal"></param>
-        public void SetPropVal(Int32 propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal)
-        {
-            allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].SetValue(this, propVal, null);
-        }
+        public void SetPropVal(int propNum, [MarshalAs(UnmanagedType.Struct)] ref object propVal)
+            => allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].SetValue(this, propVal, null);
 
         /// <summary>Определяет, можно ли читать значение свойства</summary>
         /// <param name="propNum"></param>
         /// <param name="propRead"></param>
-        public void IsPropReadable(Int32 propNum, ref bool propRead)
-        {
-            propRead = allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].CanRead;
-        }
+        public void IsPropReadable(int propNum, ref bool propRead)
+            => propRead = allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].CanRead;
 
         /// <summary>Определяет, можно ли изменять значение свойства</summary>
         /// <param name="propNum"></param>
         /// <param name="propWrite"></param>
-        public void IsPropWritable(Int32 propNum, ref Boolean propWrite)
-        {
-            propWrite = allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].CanWrite;
-        }
+        public void IsPropWritable(int propNum, ref Boolean propWrite)
+            => propWrite = allPropertyInfo[(int)propertyNumberToPropertyInfoIdx[propNum]].CanWrite;
 
         /// <summary>Возвращает количество методов</summary>
         /// <param name="pMethods"></param>
-        public void GetNMethods(ref Int32 pMethods)
-        {
-            pMethods = (Int32)nameToNumber.Count;
-        }
+        public void GetNMethods(ref int pMethods)
+            => pMethods = nameToNumber.Count;
 
         /// <summary>Возвращает идентификатор метода по его имени</summary>
         /// <param name="methodName">Имя метода</param>
         /// <param name="methodNum">Идентификатор метода</param>
-        public void FindMethod([MarshalAs(UnmanagedType.BStr)] String methodName, ref Int32 methodNum)
-        {
-            methodNum = (Int32)nameToNumber[methodName];
-        }
+        public void FindMethod([MarshalAs(UnmanagedType.BStr)] String methodName, ref int methodNum)
+            => methodNum = (int)nameToNumber[methodName];
 
         /// <summary>Возвращает имя метода по идентификатору</summary>
         /// <param name="methodNum"></param>
         /// <param name="methodAlias"></param>
         /// <param name="methodName"></param>
-        public void GetMethodName(Int32 methodNum, Int32 methodAlias, [MarshalAs(UnmanagedType.BStr)] ref String methodName)
-        {
-            methodName = (String)numberToName[methodNum];
-        }
+        public void GetMethodName(int methodNum, int methodAlias, [MarshalAs(UnmanagedType.BStr)] ref String methodName)
+            => methodName = (String)numberToName[methodNum];
 
         /// <summary>Возвращает число параметров метода по его идентификатору</summary>
         /// <param name="methodNum">Идентификатор метода</param>
         /// <param name="pParams">Число параметров</param>
-        public void GetNParams(Int32 methodNum, ref Int32 pParams)
-        {
-            pParams = (Int32)numberToParams[methodNum];
-        }
+        public void GetNParams(int methodNum, ref int pParams)
+            => pParams = (int)numberToParams[methodNum];
 
         /// <summary>Получить значение параметра метода по умолчанию</summary>
         /// <param name="methodNum">Идентификатор метода</param>
         /// <param name="paramNum">Номер параметра</param>
         /// <param name="paramDefValue">Возвращаемое значение</param>
-        public void GetParamDefValue(Int32 methodNum, Int32 paramNum, [MarshalAs(UnmanagedType.Struct)] ref object paramDefValue) { }
+        public void GetParamDefValue(int methodNum, int paramNum, [MarshalAs(UnmanagedType.Struct)] ref object paramDefValue) { }
 
         /// <summary>Указывает, что у метода есть возвращаемое значение</summary>
         /// <param name="methodNum">Идентификатор метода</param>
         /// <param name="retValue">Наличие возвращаемого значения</param>
-        public void HasRetVal(Int32 methodNum, ref Boolean retValue)
-        {
-            retValue = (Boolean)numberToRetVal[methodNum];
-        }
+        public void HasRetVal(int methodNum, ref Boolean retValue)
+            => retValue = (Boolean)numberToRetVal[methodNum];
 
         /// <summary>Вызов метода как процедуры с использованием идентификатора</summary>
         /// <param name="methodNum">Идентификатор метода</param>
         /// <param name="pParams">Параметры</param>
-        public void CallAsProc(Int32 methodNum, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams)
+        public void CallAsProc(int methodNum, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams)
         {
             try
             {
@@ -366,7 +337,7 @@ namespace AddIn
             }
             catch (Exception e)
             {
-                asyncEvent.ExternalEvent(AddIn.AddInName, e.Message, e.ToString());
+                asyncEvent.ExternalEvent(AddInName, e.Message, e.ToString());
             }
         }
 
@@ -374,7 +345,7 @@ namespace AddIn
         /// <param name="methodNum">Идентификатор метода</param>
         /// <param name="retValue">Возвращаемое значение</param>
         /// <param name="pParams">Параметры</param>
-        public void CallAsFunc(Int32 methodNum, [MarshalAs(UnmanagedType.Struct)] ref object retValue, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams)
+        public void CallAsFunc(int methodNum, [MarshalAs(UnmanagedType.Struct)] ref object retValue, [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] ref object[] pParams)
         {
             try
             {
@@ -382,7 +353,7 @@ namespace AddIn
             }
             catch (Exception e)
             {
-                asyncEvent.ExternalEvent(AddIn.AddInName, e.Message, e.ToString());
+                asyncEvent.ExternalEvent(AddInName, e.Message, e.ToString());
             }
         }
     }
