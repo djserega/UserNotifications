@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AddIn
@@ -31,12 +27,10 @@ namespace AddIn
 
         private void _notifyIcon_BalloonTipClosed(object sender, EventArgs e)
         {
-            // вызвано закрытие сообщения, либо автозакрытие по времени
         }
 
         private void _notifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            // нажато на всплывающее уведомление
             _userBalloonTipClickedEvent.InvokeUserBalloonTipClicked(((NotifyIcon)sender).BalloonTipText);
         }
 
