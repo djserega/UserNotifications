@@ -22,8 +22,7 @@ namespace AddIn
             _notifyIcon = new NotifyIcon()
             {
                 BalloonTipIcon = ToolTipIcon.Info,
-                Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
-                //Visible = true
+                Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
             };
             _notifyIcon.BalloonTipClicked += _notifyIcon_BalloonTipClicked;
             _notifyIcon.BalloonTipClosed += _notifyIcon_BalloonTipClosed;
@@ -51,8 +50,6 @@ namespace AddIn
             _notifyIcon.BalloonTipTitle = _title;
             _notifyIcon.BalloonTipText = message;
             _notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-
-            //_notifyIcon.Text = message;
 
             _notifyIcon.ShowBalloonTip(0);
         }
