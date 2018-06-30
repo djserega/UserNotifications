@@ -27,6 +27,7 @@ namespace AddIn
             if (_dictionaryNotifications.ContainsKey(hashCode))
             {
                 param = _dictionaryNotifications[hashCode].URL;
+                _dictionaryNotifications.Remove(hashCode);
             }
 
             if (param.StartsWith(_prefixUrl))
@@ -47,7 +48,7 @@ namespace AddIn
         public void ShowMessageURL(string message, string url)
         {
             _dictionaryNotifications.Add(message.GetHashCode(), new ObjectUserNotifications(message, url));
-            _notify.ShowMessage(message);
+            ShowMessage(message);
         }
 
         public void Hide() => _notify.Hide();
