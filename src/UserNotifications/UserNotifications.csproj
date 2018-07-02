@@ -7,8 +7,8 @@
     <ProjectGuid>{16656B20-A04A-4B1B-9B16-221D97ABFA1C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AddIn</RootNamespace>
-    <AssemblyName>AddIn.UserNotification</AssemblyName>
+    <RootNamespace>UserNotifications</RootNamespace>
+    <AssemblyName>AddIn.Notifications</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,12 +32,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>UserNotifications.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>AddIn.Notifications.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>notification.ico</ApplicationIcon>
@@ -49,7 +51,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddIn.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="INotifications.cs" />
     <Compile Include="Notifications.cs" />
@@ -58,10 +59,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="UserNotifications.pfx" />
+    <Content Include="notification.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="notification.ico" />
+    <None Include="AddIn.Notifications.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
