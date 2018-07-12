@@ -43,6 +43,8 @@ namespace UserNotifications
             {
                 case "#ConnectUser":
                     return SendMessage(GetServiceMessageConnectUser(param));
+                case "#DisconnectUser":
+                    return SendMessage(GetServiceMessageDisconnectUser(param));
                 default:
                     return false;
             }
@@ -103,17 +105,28 @@ namespace UserNotifications
 
         private string GetServiceMessageConnectUser(params string[] param)
         {
-            StringBuilder stringBuilder = new StringBuilder("#ConnectUser;");
+            StringBuilder stringBuilder = new StringBuilder("#ConnectUser");
 
-            stringBuilder.AppendLine("#UserName=");
+            stringBuilder.AppendLine("");
+
+            stringBuilder.Append("#UserName=");
             stringBuilder.Append(param[0]);
-            stringBuilder.Append(";");
+            stringBuilder.AppendLine("");
 
-            stringBuilder.AppendLine("#IP=");
+            stringBuilder.Append("#ID=");
+            stringBuilder.Append(param[0]);
+            stringBuilder.AppendLine("");
+
+            stringBuilder.Append("#IP=");
             stringBuilder.Append(_currentIP);
-            stringBuilder.Append(";");
+            stringBuilder.AppendLine("");
 
             return stringBuilder.ToString();
+        }
+
+        private string GetServiceMessageDisconnectUser(params string[] param)
+        {
+            return param[0];
         }
 
         #endregion

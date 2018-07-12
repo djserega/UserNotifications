@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace AddIn
     [ClassInterface(ClassInterfaceType.None)]
     public class Notifications : INotifications, IInitDone, ILanguageExtender
     {
-      
+
         #region Notifications
 
         private readonly string _prefixUrl = "e1cib/";
@@ -25,10 +26,17 @@ namespace AddIn
 
         public Notifications()
         {
+            //Debugger.Launch();
+
             _userBalloonTipClickedEvent.UserBalloonTipClicked += _userBalloonTipClickedEvent_UserBalloonTipClicked;
             _notify = new Notify(_userBalloonTipClickedEvent);
 
             _tcpClientNotification = new TcpClientNotification();
+        }
+
+        ~Notifications()
+        {
+            //Debugger.Break();
         }
 
         private void _userBalloonTipClickedEvent_UserBalloonTipClicked(string param)
@@ -63,11 +71,6 @@ namespace AddIn
             ShowMessage(message);
         }
 
-        private string ReadMessage()
-        {
-            return _tcpClientNotification.ReadMessageAsync().Result;
-        }
-
         public void Hide() => _notify.Hide();
 
         #endregion
@@ -75,31 +78,45 @@ namespace AddIn
         #region TCP
 
         private TcpClientNotification _tcpClientNotification;
+        private string _idConnect;
 
-
-        public bool ConnectToService(string userName)
+        private string ReadMessage()
         {
+            if (!CheckConnection())
+                return "Не подключено к сервису.";
+
+            return _tcpClientNotification.ReadMessageAsync().Result;
+        }
+
+        public string ConnectToService(string userName, string id)
+        {
+            if (_tcpClientNotification.Connected)
+                return "Подключение было выполнено ранее.";
+
             _tcpClientNotification.ConnectedTcpServer();
 
             if (!CheckConnection())
-            {
-                TextError = "Не подключено к сервису.";
-                return false;
-            }
+                return "Не подключено к сервису.";
 
-            _tcpClientNotification.SendServiceMessage("#ConnectUser", userName);
+            _tcpClientNotification.SendServiceMessage("#ConnectUser", userName, id);
 
             string data = ReadMessage();
 
             try
             {
-                return Convert.ToBoolean(data);
+                _idConnect = id;
+                return data;
             }
             catch (Exception ex)
             {
-                TextError = ex.Message;
-                return false;
+                return ex.Message;
             }
+        }
+
+        public void DisconnectService()
+        {
+            //if (CheckConnection())
+                _tcpClientNotification.SendServiceMessage("#DisconnectUser", _idConnect);
         }
 
         public bool CheckConnection()

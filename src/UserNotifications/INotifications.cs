@@ -11,7 +11,8 @@ namespace AddIn
         void ShowMessageURL(string message, string url);
         void Hide();
 
-        bool ConnectToService(string userName);
+        string ConnectToService(string userName, string id);
+        void DisconnectService();
         bool CheckConnection();
         DateTime GetCurrentTime();
         string TextError { get; }
