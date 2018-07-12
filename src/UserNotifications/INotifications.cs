@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace AddIn
 {
@@ -9,5 +10,10 @@ namespace AddIn
         void ShowMessage(string message);
         void ShowMessageURL(string message, string url);
         void Hide();
+
+        bool ConnectToService(string userName);
+        bool CheckConnection();
+        DateTime GetCurrentTime();
+        string TextError { get; }
     }
 }

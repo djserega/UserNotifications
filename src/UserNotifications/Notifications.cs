@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using UserNotifications;
 
 namespace AddIn
 {
@@ -10,16 +12,23 @@ namespace AddIn
     [ClassInterface(ClassInterfaceType.None)]
     public class Notifications : INotifications, IInitDone, ILanguageExtender
     {
+      
+        #region Notifications
+
         private readonly string _prefixUrl = "e1cib/";
 
         private Dictionary<int, ObjectUserNotifications> _dictionaryNotifications = new Dictionary<int, ObjectUserNotifications>();
         private readonly UserBalloonTipEvent _userBalloonTipClickedEvent = new UserBalloonTipEvent();
         private Notify _notify;
 
+        public string TextError { get; set; }
+
         public Notifications()
         {
             _userBalloonTipClickedEvent.UserBalloonTipClicked += _userBalloonTipClickedEvent_UserBalloonTipClicked;
             _notify = new Notify(_userBalloonTipClickedEvent);
+
+            _tcpClientNotification = new TcpClientNotification();
         }
 
         private void _userBalloonTipClickedEvent_UserBalloonTipClicked(string param)
@@ -54,10 +63,78 @@ namespace AddIn
             ShowMessage(message);
         }
 
+        private string ReadMessage()
+        {
+            return _tcpClientNotification.ReadMessageAsync().Result;
+        }
+
         public void Hide() => _notify.Hide();
 
+        #endregion
 
-        #region registration
+        #region TCP
+
+        private TcpClientNotification _tcpClientNotification;
+
+
+        public bool ConnectToService(string userName)
+        {
+            _tcpClientNotification.ConnectedTcpServer();
+
+            if (!CheckConnection())
+            {
+                TextError = "Не подключено к сервису.";
+                return false;
+            }
+
+            _tcpClientNotification.SendServiceMessage("#ConnectUser", userName);
+
+            string data = ReadMessage();
+
+            try
+            {
+                return Convert.ToBoolean(data);
+            }
+            catch (Exception ex)
+            {
+                TextError = ex.Message;
+                return false;
+            }
+        }
+
+        public bool CheckConnection()
+        {
+            TextError = string.Empty;
+            return _tcpClientNotification.Connected;
+        }
+
+
+        public DateTime GetCurrentTime()
+        {
+            if (!CheckConnection())
+            {
+                TextError = "Не подключено к сервису.";
+                return DateTime.MinValue;
+            }
+
+            _tcpClientNotification.SendMessage("#GetCurrentTime");
+
+            string data = ReadMessage();
+
+            try
+            {
+                return Convert.ToDateTime(data);
+            }
+            catch (Exception ex)
+            {
+                TextError = ex.Message;
+                return DateTime.MinValue;
+            }
+        }
+
+        #endregion
+
+        #region Registration dll
 
         public const string AddInName = "Notifications";
 
@@ -354,7 +431,7 @@ namespace AddIn
 
     }
 
-    #region registration
+    #region Registration dll
 
     /// <summary>Функции данного интерфейса вызываются при подключении компоненты</summary>
     /// 
