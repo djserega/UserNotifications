@@ -26,8 +26,6 @@ namespace AddIn
 
         public Notifications()
         {
-            //Debugger.Launch();
-
             _userBalloonTipClickedEvent.UserBalloonTipClicked += _userBalloonTipClickedEvent_UserBalloonTipClicked;
             _notify = new Notify(_userBalloonTipClickedEvent);
 
@@ -36,7 +34,11 @@ namespace AddIn
 
         ~Notifications()
         {
-            //Debugger.Break();
+            if (_tcpClientNotification != null)
+            {
+                _tcpClientNotification.SendServiceMessage("#DisconnectUser");
+                _tcpClientNotification = null;
+            }
         }
 
         private void _userBalloonTipClickedEvent_UserBalloonTipClicked(string param)
@@ -98,7 +100,8 @@ namespace AddIn
             if (!CheckConnection())
                 return "Не подключено к сервису.";
 
-            _tcpClientNotification.SendServiceMessage("#ConnectUser", userName, id);
+            _tcpClientNotification.IDConnection = id;
+            _tcpClientNotification.SendServiceMessage("#ConnectUser", userName);
 
             string data = ReadMessage();
 
@@ -113,10 +116,14 @@ namespace AddIn
             }
         }
 
-        public void DisconnectService()
+        public string DisconnectService()
         {
-            //if (CheckConnection())
-                _tcpClientNotification.SendServiceMessage("#DisconnectUser", _idConnect);
+            if (!CheckConnection())
+                return "Не подключено к сервису.";
+
+            _tcpClientNotification.SendServiceMessage("#DisconnectUser");
+
+            return ReadMessage();
         }
 
         public bool CheckConnection()
@@ -144,7 +151,7 @@ namespace AddIn
             }
             catch (Exception ex)
             {
-                TextError = ex.Message;
+                TextError = $"{ex.Message}\nПередана строка: {data}";
                 return DateTime.MinValue;
             }
         }

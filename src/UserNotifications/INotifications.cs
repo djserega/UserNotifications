@@ -12,7 +12,7 @@ namespace AddIn
         void Hide();
 
         string ConnectToService(string userName, string id);
-        void DisconnectService();
+        string DisconnectService();
         bool CheckConnection();
         DateTime GetCurrentTime();
         string TextError { get; }

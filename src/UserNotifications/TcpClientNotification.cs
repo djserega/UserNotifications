@@ -16,7 +16,23 @@ namespace UserNotifications
         private readonly IPAddress _currentIP;
         private readonly int _port = 44566;
 
-        internal bool Connected { get; set; }
+        internal string IDConnection { get; set; }
+        internal bool Connected
+        {
+            get
+            {
+                if (_tcpClient == null)
+                    return false;
+
+                return _tcpClient.Connected;
+            }
+        }
+
+        internal TcpClientNotification()
+        {
+            _currentIP = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(f => f.AddressFamily == AddressFamily.InterNetwork);
+        }
+
 
         #region Exchange
 
@@ -86,15 +102,9 @@ namespace UserNotifications
 
         #region TCP
 
-        internal TcpClientNotification()
-        {
-            _currentIP = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(f => f.AddressFamily == AddressFamily.InterNetwork);
-        }
-
         internal void ConnectedTcpServer()
         {
             _tcpClient = new TcpClient(_currentIP.ToString(), _port);
-            Connected = _tcpClient.Connected;
         }
 
 
@@ -114,7 +124,7 @@ namespace UserNotifications
             stringBuilder.AppendLine("");
 
             stringBuilder.Append("#ID=");
-            stringBuilder.Append(param[0]);
+            stringBuilder.Append(IDConnection);
             stringBuilder.AppendLine("");
 
             stringBuilder.Append("#IP=");
@@ -126,7 +136,15 @@ namespace UserNotifications
 
         private string GetServiceMessageDisconnectUser(params string[] param)
         {
-            return param[0];
+            StringBuilder stringBuilder = new StringBuilder("#DisconnectUser");
+
+            stringBuilder.AppendLine("");
+
+            stringBuilder.Append("#ID=");
+            stringBuilder.Append(IDConnection);
+            stringBuilder.AppendLine("");
+
+            return stringBuilder.ToString();
         }
 
         #endregion
